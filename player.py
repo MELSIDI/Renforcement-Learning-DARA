@@ -8,3 +8,6 @@ class Player:
 
     def capture_pawn(self):
         self.pawns_left -= 1
+
+    def __str__(self):
+        return f"Player Id : {self.player_id}\nPawns Lefts : {self.pawns_left}"

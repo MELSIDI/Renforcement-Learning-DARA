@@ -1,0 +1,66 @@
+Game History - Winner: Player None
+
+Turn 1:
+  Player 1: _,c4
+  Player 2: _,c3
+--------------------
+Turn 2:
+  Player 1: _,d4
+  Player 2: _,d3
+--------------------
+Turn 3:
+  Player 1: _,b3
+  Player 2: _,b4
+--------------------
+Turn 4:
+  Player 1: _,e3
+  Player 2: _,e4
+--------------------
+Turn 5:
+  Player 1: _,e5
+  Player 2: _,d5
+--------------------
+Turn 6:
+  Player 1: _,c5
+  Player 2: _,f4
+--------------------
+Turn 7:
+  Player 1: _,f5
+  Player 2: _,f3
+--------------------
+Turn 8:
+  Player 1: _,b5
+  Player 2: _,a5
+--------------------
+Turn 9:
+  Player 1: _,a4
+  Player 2: _,a3
+--------------------
+Turn 10:
+  Player 1: _,a2
+  Player 2: _,b2
+--------------------
+Turn 11:
+  Player 1: _,c2
+  Player 2: _,d2
+--------------------
+Turn 12:
+  Player 1: _,e2
+  Player 2: _,a1
+--------------------
+Turn 13:
+  Player 1: e2,e1
+  Player 2: d2,e2
+--------------------
+Turn 14:
+  Player 1: e1,d1
+  Player 2: e2,f2->d4
+--------------------
+Turn 15:
+  Player 1: c4,d4
+  Player 2: f2,e2
+--------------------
+Turn 16:
+  Player 1: c5,c4
+  Player 2: e2,f2
+--------------------

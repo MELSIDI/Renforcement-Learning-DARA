@@ -1,6 +1,6 @@
 import pygame
 from constants import *
-from pawn import Pawn
+from pawns.pawn import Pawn  # Importe la classe de base abstraite Pawn
 
 
 class Board:
@@ -10,35 +10,33 @@ class Board:
     def draw(self, screen, selected_pawn_coords, font):
         screen.fill(WHITE)
 
-        # Draw grid coordinates
-        # Vertical labels (1, 2, 3, 4, 5)
+        # Dessine les coordonnées de la grille (1-5, a-f)
         for y in range(GRID_Y_SIZE):
             label = font.render(str(GRID_Y_SIZE - y), True, BLACK)
             label_rect = label.get_rect(center=(MARGIN_X - 25, MARGIN_Y + y * SQUARE_SIZE + SQUARE_SIZE // 2))
             screen.blit(label, label_rect)
 
-        # Horizontal labels (a, b, c, d, e, f)
         for x in range(GRID_X_SIZE):
             label = font.render(chr(ord('a') + x), True, BLACK)
             label_rect = label.get_rect(center=(MARGIN_X + x * SQUARE_SIZE + SQUARE_SIZE // 2, MARGIN_Y - 25))
             screen.blit(label, label_rect)
 
-        # Draw the grid
+        # Dessine la grille elle-même
         for y in range(GRID_Y_SIZE):
             for x in range(GRID_X_SIZE):
                 rect = pygame.Rect(MARGIN_X + x * SQUARE_SIZE, MARGIN_Y + y * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE)
                 pygame.draw.rect(screen, LIGHT_GRAY, rect, 1)
 
-        # Draw the pawns
+        # Dessine les pions en appelant leur méthode draw()
         for y in range(GRID_Y_SIZE):
             for x in range(GRID_X_SIZE):
                 pawn = self.grid[y][x]
                 if pawn:
                     center_x = MARGIN_X + x * SQUARE_SIZE + SQUARE_SIZE // 2
                     center_y = MARGIN_Y + y * SQUARE_SIZE + SQUARE_SIZE // 2
-                    pygame.draw.circle(screen, pawn.color, (center_x, center_y), PAWN_RADIUS)
+                    pawn.draw(screen, center_x, center_y)
 
-        # Highlight the selected pawn
+        # Met en surbrillance le pion sélectionné
         if selected_pawn_coords:
             y, x = selected_pawn_coords
             center_x = MARGIN_X + x * SQUARE_SIZE + SQUARE_SIZE // 2
@@ -46,7 +44,7 @@ class Board:
             pygame.draw.circle(screen, BLACK, (center_x, center_y), PAWN_RADIUS, 4)
 
     def check_for_alignment(self, y, x, player_id):
-        # ... (le reste de la méthode reste inchangé)
+        # ... (La logique de détection d'alignement reste inchangée)
         # Check for EXACTLY 3 pawns in a row (horizontal)
         for i in range(GRID_X_SIZE - 2):
             if (self.grid[y][i] and self.grid[y][i].player_id == player_id and

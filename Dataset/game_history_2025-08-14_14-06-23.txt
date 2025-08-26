@@ -1,0 +1,26 @@
+Game History - Winner: Player None
+
+Turn 1:
+  Player 1: _,d3
+  Player 2: _,b2
+--------------------
+Turn 2:
+  Player 1: _,e4
+  Player 2: _,d1
+--------------------
+Turn 3:
+  Player 1: _,d2
+  Player 2: _,f5
+--------------------
+Turn 4:
+  Player 1: _,f4
+  Player 2: _,c3
+--------------------
+Turn 5:
+  Player 1: _,f3
+  Player 2: _,d4
+--------------------
+Turn 6:
+  Player 1: _,d5
+  Player 2: _,a1
+--------------------

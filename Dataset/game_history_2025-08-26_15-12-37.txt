@@ -1,0 +1,110 @@
+Game History - Winner: Player J1
+
+Turn 1:
+  Player 1: _,c3
+  Player 2: _,e4
+--------------------
+Turn 2:
+  Player 1: _,d3
+  Player 2: _,e3
+--------------------
+Turn 3:
+  Player 1: _,d2
+  Player 2: _,c2
+--------------------
+Turn 4:
+  Player 1: _,c4
+  Player 2: _,b5
+--------------------
+Turn 5:
+  Player 1: _,d5
+  Player 2: _,e1
+--------------------
+Turn 6:
+  Player 1: _,f5
+  Player 2: _,c5
+--------------------
+Turn 7:
+  Player 1: _,d4
+  Player 2: _,b2
+--------------------
+Turn 8:
+  Player 1: _,f3
+  Player 2: _,a4
+--------------------
+Turn 9:
+  Player 1: _,d1
+  Player 2: _,f4
+--------------------
+Turn 10:
+  Player 1: _,b1
+  Player 2: _,c1
+--------------------
+Turn 11:
+  Player 1: _,a3
+  Player 2: _,b3
+--------------------
+Turn 12:
+  Player 1: _,a5
+  Player 2: _,f1
+--------------------
+Turn 13:
+  Player 1: d2,e2
+  Player 2: a4,b4
+--------------------
+Turn 14:
+  Player 1: d5,e5
+  Player 2: b2,a2
+--------------------
+Turn 15:
+  Player 1: f3,f2
+  Player 2: c5,d5
+--------------------
+Turn 16:
+  Player 1: d1,d2->b5
+  Player 2: e1,d1
+--------------------
+Turn 17:
+  Player 1: c4,c5
+  Player 2: f1,e1->b1
+--------------------
+Turn 18:
+  Player 1: f2,f3
+  Player 2: b4,c4
+--------------------
+Turn 19:
+  Player 1: f3,f2->c4
+  Player 2: b3,b4
+--------------------
+Turn 20:
+  Player 1: d4,c4->b4
+  Player 2: a2,a1->a3
+--------------------
+Turn 21:
+  Player 1: c4,d4->c1
+  Player 2: f4,f3
+--------------------
+Turn 22:
+  Player 1: d4,c4->e4
+  Player 2: a1,b1
+--------------------
+Turn 23:
+  Player 1: c4,d4->e3
+  Player 2: b1,a1
+--------------------
+Turn 24:
+  Player 1: d4,c4->d5
+  Player 2: f3,f4
+--------------------
+Turn 25:
+  Player 1: c4,d4->f4
+  Player 2: c2,b2
+--------------------
+Turn 26:
+  Player 1: d4,c4->a1
+  Player 2: b2,b3
+--------------------
+Turn 27:
+  Player 1: c4,d4->b3
+  Player 2: 
+--------------------

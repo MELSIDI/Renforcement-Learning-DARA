@@ -3,8 +3,9 @@ import sys
 import copy
 import datetime
 import os
+from time import sleep
 from boards.board import Board
-from player import Player
+from players.player import HumanPlayer
 from constants import *
 from pawns.round_pawn import RoundPawn
 
@@ -37,17 +38,17 @@ class Game:
         self.winner = None
         self.running = True
 
-    def _draw_text(self, text, y_pos, color=BLACK):
+    def draw_text(self, text, y_pos, color=BLACK):
         """Affiche un texte centré sur l'écran."""
         text_surface = self.FONT.render(text, True, color)
         text_rect = text_surface.get_rect(center=(WINDOW_SIZE[0] // 2, y_pos))
         self.screen.blit(text_surface, text_rect)
 
-    def _draw_message(self, message, color=BLACK):
+    def draw_message(self, message, color=BLACK):
         """Affiche le message d'information du jeu."""
-        self._draw_text(message, MESSAGE_POS, color)
+        self.draw_text(message, MESSAGE_POS, color)
 
-    def _draw_move_history(self):
+    def draw_move_history(self):
         """Affiche l'historique des coups sur les côtés de l'écran."""
         y_start = 50
         x_p1 = MARGIN_X // 2
@@ -89,13 +90,13 @@ class Game:
             self.screen.blit(move_surface, move_rect)
             y_offset += 25
 
-    def _get_chess_notation(self, y, x):
+    def get_chess_notation(self, y, x):
         """Convertit des coordonnées de grille en notation de type échiquier (e.g. (0,0) -> 'a1')."""
         column_char = chr(ord('a') + x)
         row_num = GRID_Y_SIZE - y
         return f"{column_char}{row_num}"
 
-    def _get_grid_coords(self, pos):
+    def get_grid_coords(self, pos):
         """Convertit les coordonnées de la souris en coordonnées de grille."""
         x, y = pos
         if MARGIN_X <= x < MARGIN_X + GRID_X_SIZE * SQUARE_SIZE and \
@@ -105,11 +106,11 @@ class Game:
             return row, col
         return None
 
-    def _update_history(self):
+    def update_history(self):
         """Sauvegarde l'état du plateau dans l'historique."""
         self.position_history.append(copy.deepcopy(self.board.grid))
 
-    def _save_game_history_to_file(self):
+    def save_game_history_to_file(self):
         """Sauvegarde l'historique complet de la partie dans un fichier texte."""
         directory = "dataset"
         if not os.path.exists(directory):
@@ -131,7 +132,7 @@ class Game:
                 f.write(f"  Player 2: {p2_move}\n")
                 f.write("-" * 20 + "\n")
 
-    def _has_valid_moves(self, player_id):
+    def has_valid_moves(self, player_id):
         """
         Vérifie si le joueur `player_id` a au moins un coup valide sur le plateau.
         Cette méthode parcourt toutes les pièces du joueur et vérifie s'il existe
@@ -151,7 +152,7 @@ class Game:
                                 return True
         return False
 
-    def _handle_placement_click(self, coords):
+    def handle_placement_click(self, coords):
         """Gère les clics de la souris pendant la phase de placement des pions."""
         y, x = coords
         if not self.board.grid[y][x]:
@@ -161,20 +162,20 @@ class Game:
                 self.board.grid[y][x] = None
                 self.message_info = "Invalid move. You cannot form a 3-pawn alignment during placement."
             else:
-                notation = f"_,{self._get_chess_notation(y, x)}"
+                notation = f"_,{self.get_chess_notation(y, x)}"
                 if self.current_player == self.player1:
                     self.player1_moves.append(notation)
                 else:
                     self.player2_moves.append(notation)
 
-                self._update_history()
+                self.update_history()
                 self.placement_turn += 1
                 if self.placement_turn == self.player1.pawns_left + self.player2.pawns_left:
                     self.phase = "game"
                     self.current_player = self.player1
                     self.message_info = f"Placement finished. {self.player1.player_id}, select a pawn to move."
                     # Vérification après le placement : le joueur qui commence le mouvement est-il bloqué ?
-                    if not self._has_valid_moves(self.current_player.player_id):
+                    if not self.has_valid_moves(self.current_player.player_id):
                         self.game_over = True
                         self.winner = self.player2.player_id if self.current_player == self.player1 else self.player1.player_id
                         self.message_info = f"Player {self.current_player.player_id} is blocked. Player {self.winner} wins!"
@@ -185,12 +186,11 @@ class Game:
         else:
             self.message_info = "Invalid spot. The square must be empty."
 
-    def _handle_game_click(self, coords):
+    def handle_game_click(self, coords):
         """Gère les clics de la souris pendant la phase de mouvement."""
         y_end, x_end = coords
         if self.selected_pawn_coords is None:
-            if self.board.grid[y_end][x_end] and self.board.grid[y_end][
-                x_end].player_id == self.current_player.player_id:
+            if self.board.grid[y_end][x_end] and self.board.grid[y_end][x_end].player_id == self.current_player.player_id:
                 self.selected_pawn_coords = (y_end, x_end)
                 self.message_info = "Pawn selected. Click on the destination square."
             else:
@@ -204,14 +204,14 @@ class Game:
                     self.board.grid[y_end][x_end] = pawn_to_move
                     self.board.grid[y_start][x_start] = None
 
-                    notation = f"{self._get_chess_notation(y_start, x_start)},{self._get_chess_notation(y_end, x_end)}"
+                    notation = f"{self.get_chess_notation(y_start, x_start)},{self.get_chess_notation(y_end, x_end)}"
 
                     if self.board.check_for_alignment(y_end, x_end, self.current_player.player_id):
                         if self.current_player == self.player1:
                             self.player1_moves.append(notation)
                         else:
                             self.player2_moves.append(notation)
-                        self._update_history()
+                        self.update_history()
                         self.phase = "capture"
                         self.message_info = "Alignment! Click on an opponent's pawn to capture."
                     else:
@@ -219,11 +219,11 @@ class Game:
                             self.player1_moves.append(notation)
                         else:
                             self.player2_moves.append(notation)
-                        self._update_history()
+                        self.update_history()
                         self.current_player = self.player2 if self.current_player == self.player1 else self.player1
                         self.message_info = f"Turn for {self.current_player.player_id}. Move a pawn."
                         # Vérification après un coup : le prochain joueur est-il bloqué ?
-                        if not self._has_valid_moves(self.current_player.player_id):
+                        if not self.has_valid_moves(self.current_player.player_id):
                             self.game_over = True
                             self.winner = self.player2.player_id if self.current_player == self.player1 else self.player1.player_id
                             self.message_info = f"Player {self.current_player.player_id} is blocked. Player {self.winner} wins!"
@@ -236,12 +236,12 @@ class Game:
                 self.message_info = "Invalid move. This pawn cannot move that way."
                 self.selected_pawn_coords = None
 
-    def _handle_capture_click(self, coords):
+    def handle_capture_click(self, coords):
         """Gère les clics de la souris pendant la phase de capture."""
         y, x = coords
         opponent = self.player2 if self.current_player == self.player1 else self.player1
         if self.board.grid[y][x] and self.board.grid[y][x].player_id == opponent.player_id:
-            captured_pawn_notation = self._get_chess_notation(y, x)
+            captured_pawn_notation = self.get_chess_notation(y, x)
             self.board.grid[y][x] = None
 
             if self.current_player == self.player1:
@@ -256,14 +256,15 @@ class Game:
                 self.message_info = f"Player {self.current_player.player_id} wins!"
                 self.running = False
             else:
-                self._update_history()
+                self.update_history()
                 self.phase = "game"
                 self.current_player = opponent
                 self.message_info = f"Opponent's pawn captured! It's {self.current_player.player_id}'s turn."
                 # Vérification après la capture : le prochain joueur est-il bloqué ?
-                if not self._has_valid_moves(self.current_player.player_id):
+                if not self.has_valid_moves(self.current_player.player_id):
                     self.game_over = True
-                    self.winner = self.player2.player_id if self.current_player == self.player1 else self.player1.player_id
+                    self.winner = self.player2.player_id if self.current_player == self.player1 \
+                        else self.player1.player_id
                     self.message_info = f"Player {self.current_player.player_id} is blocked. Player {self.winner} wins!"
                     self.running = False
         else:
@@ -271,27 +272,37 @@ class Game:
 
     def run(self):
         """La boucle de jeu principale."""
+
         while self.running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
 
+                # Le joueur humain prend son tour via les clics de souris
                 if event.type == pygame.MOUSEBUTTONDOWN and not self.game_over:
-                    coords = self._get_grid_coords(event.pos)
-                    if coords:
-                        if self.phase == "placement":
-                            self._handle_placement_click(coords)
-                        elif self.phase == "game":
-                            self._handle_game_click(coords)
-                        elif self.phase == "capture":
-                            self._handle_capture_click(coords)
+                    if isinstance(self.current_player, HumanPlayer):
+                        coords = self.get_grid_coords(event.pos)
+                        if coords:
+                            if self.phase == "placement":
+                                self.handle_placement_click(coords)
+                            elif self.phase == "game":
+                                self.handle_game_click(coords)
+                            elif self.phase == "capture":
+                                self.handle_capture_click(coords)
+
+            # Le tour de l'IA est géré ICI
+            if not isinstance(self.current_player, HumanPlayer) and not self.game_over:
+                self.current_player.take_turn(self)
 
             self.board.draw(self.screen, self.selected_pawn_coords, self.FONT)
-            self._draw_message(self.message_info, self.current_player.color if self.phase != "capture" else BLACK)
-            self._draw_move_history()
+            self.draw_message(self.message_info, self.current_player.color if self.phase != "capture" else BLACK)
+            self.draw_move_history()
             pygame.display.flip()
 
-        # Sauvegarde l'historique une seule fois à la fin de la partie
-        self._save_game_history_to_file()
+            if not isinstance(self.current_player, HumanPlayer) and not self.game_over:
+                pygame.time.wait(10000)
+
+
+        self.save_game_history_to_file()
         pygame.quit()
         sys.exit()
